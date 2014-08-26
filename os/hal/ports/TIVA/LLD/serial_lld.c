@@ -1,6 +1,6 @@
 /**
- * @file    TM4C129x/serial_lld.c
- * @brief   TM4C129x low level serial driver code.
+ * @file    TIVA/LLD/serial_lld.c
+ * @brief   Tiva low level serial driver code.
  *
  * @addtogroup SERIAL
  * @{
@@ -105,7 +105,7 @@ static void uart_init(SerialDriver *sdp, const SerialConfig *config)
 
   /* disable the UART before any of the control registers are reprogrammed */
   u->CTL &= ~TIVA_CTL_UARTEN;
-  div = (((120000000 * 8) / config->sc_speed) + 1) / 2; // TODO: use calculated frequency instead of fixed
+  div = (((TIVA_SYSCLK * 8) / config->sc_speed) + 1) / 2;
   u->IBRD = div / 64;   /* integer portion of the baud rate divisor */
   u->FBRD = div % 64;   /* fractional portion of the baud rate divisor */
   u->LCRH = config->sc_lcrh;   /* set data format */
@@ -169,14 +169,13 @@ static void serial_serve_interrupt(SerialDriver *sdp)
 
   if ((mis & TIVA_MIS_RXMIS) || (mis &  TIVA_MIS_RTMIS)) {
     osalSysLockFromISR();
-    if (chIQIsEmptyI(&sdp->iqueue)) {
+    if (iqIsEmptyI(&sdp->iqueue)) {
       chnAddFlagsI(sdp, CHN_INPUT_AVAILABLE);
     }
     osalSysUnlockFromISR();
-
     while ((u->FR & TIVA_FR_RXFE) == 0) {
       osalSysLockFromISR();
-      if (chIQPutI(&sdp->iqueue, u->DR) < Q_OK) {
+      if (iqPutI(&sdp->iqueue, u->DR) < Q_OK) {
         chnAddFlagsI(sdp, SD_OVERRUN_ERROR);
       }
       osalSysUnlockFromISR();
@@ -186,18 +185,14 @@ static void serial_serve_interrupt(SerialDriver *sdp)
   if (mis & TIVA_MIS_TXMIS) {
     while ((u->FR & TIVA_FR_TXFF) == 0) {
       msg_t b;
-
       osalSysLockFromISR();
-      b = chOQGetI(&sdp->oqueue);
+      b = oqGetI(&sdp->oqueue);
       osalSysUnlockFromISR();
-
       if (b < Q_OK) {
         u->IM &= ~TIVA_IM_TXIM;
-
         osalSysLockFromISR();
         chnAddFlagsI(sdp, CHN_OUTPUT_EMPTY);
         osalSysUnlockFromISR();
-
         break;
       }
       u->DR = b;
@@ -213,7 +208,7 @@ static void fifo_load(SerialDriver *sdp)
   UART_TypeDef *u = sdp->uart;
 
   while ((u->FR & TIVA_FR_TXFF) == 0) {
-    msg_t b = chOQGetI(&sdp->oqueue);
+    msg_t b = oqGetI(&sdp->oqueue);
     if (b < Q_OK) {
       chnAddFlagsI(sdp, CHN_OUTPUT_EMPTY);
       return;

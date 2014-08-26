@@ -1,6 +1,6 @@
 /**
- * @file    TM4C123/pal_lld.c
- * @brief   TM4C123 PAL subsystem low level driver.
+ * @file    TIVA/LLD/pal_lld.c
+ * @brief   Tiva PAL subsystem low level driver.
  *
  * @addtogroup PAL
  * @{
@@ -13,6 +13,54 @@
 /*===========================================================================*/
 /* Driver local definitions.                                                 */
 /*===========================================================================*/
+
+#define RCGCGPIOA       (1 << 0)
+#define RCGCGPIOB       (1 << 1)
+#define RCGCGPIOC       (1 << 2)
+#define RCGCGPIOD       (1 << 3)
+#define RCGCGPIOE       (1 << 4)
+#define RCGCGPIOF       (1 << 5)
+
+#if TIVA_HAS_GPIOG || defined(__DOXYGEN__)
+#define RCGCGPIOG       (1 << 6);
+#endif
+
+#if TIVA_HAS_GPIOH || defined(__DOXYGEN__)
+#define RCGCGPIOH       (1 << 7);
+#endif
+
+#if TIVA_HAS_GPIOJ || defined(__DOXYGEN__)
+#define RCGCGPIOJ       (1 << 8);
+#endif
+
+#if TIVA_HAS_GPIOK || defined(__DOXYGEN__)
+#define RCGCGPIOK       (1 << 9);
+#endif
+
+#if TIVA_HAS_GPIOL || defined(__DOXYGEN__)
+#define RCGCGPIOL       (1 << 10);
+#endif
+
+#if TIVA_HAS_GPIOM || defined(__DOXYGEN__)
+#define RCGCGPIOM       (1 << 11);
+#endif
+
+#if TIVA_HAS_GPION || defined(__DOXYGEN__)
+#define RCGCGPION       (1 << 12);
+#endif
+
+#if TIVA_HAS_GPIOP || defined(__DOXYGEN__)
+#define RCGCGPIOP       (1 << 13);
+#endif
+
+#if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
+#define RCGCGPIOQ       (1 << 14);
+#endif
+
+#define RCGCGPIO_VALUE  (RCGCGPIOA | RCGCGPIOB | RCGCGPIOC | RCGCGPIOD \
+                         RCGCGPIOE | RCGCGPIOF | RCGCGPIOG | RCGCGPIOH \
+                         RCGCGPIOJ | RCGCGPIOK | RCGCGPIOL | RCGCGPIOM \
+                         RCGCGPION | RCGCGPIOP | RCGCGPIOQ)
 
 /*===========================================================================*/
 /* Driver exported variables.                                                */
@@ -35,22 +83,17 @@
 /*===========================================================================*/
 
 /**
- * @brief   TM4C123x I/O ports configuration.
- * @details Ports A-F(G, H, J, K, L, M, N, P, Q) clocks enabled.
+ * @brief   TIVA I/O ports configuration.
+ * @details Ports A-F (G, H, J, K, L, M, N, P, Q) clocks enabled.
  *
- * @param[in] config    the TM4C123x ports configuration
+ * @param[in] config    the TIVA ports configuration
  *
  * @notapi
  */
 void _pal_lld_init(const PALConfig *config)
 {
-  SYSCTL->RCGCGPIO |= (1 << 0) |
-                      (1 << 1) |
-                      (1 << 2) |
-                      (1 << 3) |
-                      (1 << 4) |
-                      (1 << 5);
-                      
+  SYSCTL->RCGCGPIO |= RCGCGPIO_VALUE;
+
   __NOP();
   __NOP();
   __NOP();
@@ -146,12 +189,6 @@ void _pal_lld_init(const PALConfig *config)
   GPIOF->LOCK = 0;
   
 #if TIVA_HAS_GPIOG || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 6);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOG->DATA = config->PGData.data;
   GPIOG->DIR = config->PGData.dir;
   GPIOG->AFSEL = config->PGData.afsel;
@@ -168,12 +205,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOG.*/
   
 #if TIVA_HAS_GPIOH || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 7);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOH->DATA = config->PHData.data;
   GPIOH->DIR = config->PHData.dir;
   GPIOH->AFSEL = config->PHData.afsel;
@@ -190,12 +221,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOH.*/
   
 #if TIVA_HAS_GPIOJ || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 8);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOJ->DATA = config->PJData.data;
   GPIOJ->DIR = config->PJData.dir;
   GPIOJ->AFSEL = config->PJData.afsel;
@@ -210,12 +235,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOJ.*/
   
 #if TIVA_HAS_GPIOK || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 9);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOK->DATA = config->PKData.data;
   GPIOK->DIR = config->PKData.dir;
   GPIOK->AFSEL = config->PKData.afsel;
@@ -232,12 +251,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOK.*/
   
 #if TIVA_HAS_GPIOL || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 10);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOL->DATA = config->PLData.data;
   GPIOL->DIR = config->PLData.dir;
   GPIOL->AFSEL = config->PLData.afsel;
@@ -254,12 +267,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOL.*/
   
 #if TIVA_HAS_GPIOM || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 11);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOM->DATA = config->PMData.data;
   GPIOM->DIR = config->PMData.dir;
   GPIOM->AFSEL = config->PMData.afsel;
@@ -276,12 +283,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOM.*/
   
 #if TIVA_HAS_GPION || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 12);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPION->DATA = config->PNData.data;
   GPION->DIR = config->PNData.dir;
   GPION->AFSEL = config->PNData.afsel;
@@ -298,12 +299,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPION.*/
   
 #if TIVA_HAS_GPIOP || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 13);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOP->DATA = config->PPData.data;
   GPIOP->DIR = config->PPData.dir;
   GPIOP->AFSEL = config->PPData.afsel;
@@ -320,12 +315,6 @@ void _pal_lld_init(const PALConfig *config)
 #endif /* TIVA_HAS_GPIOP.*/
   
 #if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
-  SYSCTL->RCGCGPIO |= (1 << 14);
-  
-  __NOP();
-  __NOP();
-  __NOP();
-
   GPIOQ->DATA = config->PQData.data;
   GPIOQ->DIR = config->PQData.dir;
   GPIOQ->AFSEL = config->PQData.afsel;

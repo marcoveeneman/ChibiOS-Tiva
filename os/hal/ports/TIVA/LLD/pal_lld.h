@@ -1,6 +1,6 @@
 /**
- * @file    TM4C123/pal_lld.h
- * @brief   PAL subsystem low level driver header.
+ * @file    TIVA/LLD/pal_lld.h
+ * @brief   Tiva PAL subsystem low level driver header.
  *
  * @addtogroup PAL
  * @{
@@ -53,7 +53,7 @@ typedef struct
 } tm4c123x_gpio_setup_t;
 
 /**
- * @brief   TM4C123x GPIO static initializer.
+ * @brief   Tiva GPIO static initializer.
  * @details An instance of this structure must be passed to @p palInit() at
  *          system startup time in order to initialized the digital I/O
  *          subsystem. This represents only the initial setup, specific pads
@@ -277,20 +277,6 @@ typedef GPIO_TypeDef *ioportid_t;
 #define pal_lld_clearport(port, bits)   ((port)->MASKED_ACCESS[bits] = 0)
 
 /**
- * @brief   Toggles a bits mask on a I/O port.
- * @note    The @ref PAL provides a default software implementation of this
- *          functionality, implement this function if can optimize it by using
- *          special hardware functionalities or special coding.
- *
- * @param[in] port      port identifier
- * @param[in] bits      bits to be XORed on the specified port
- *
- * @notapi
- */
-//#define pal_lld_toggleport(port, bits)
-//  ((port)->MASKED_ACCESS[bits] &= ~((port)->MASKED_ACCESS[bits]))
-
-/**
  * @brief   Reads a group of bits.
  * @note    The @ref PAL provides a default software implementation of this
  *          functionality, implement this function if can optimize it by using
@@ -353,7 +339,8 @@ typedef GPIO_TypeDef *ioportid_t;
  *
  * @notapi
  */
-//#define pal_lld_readpad(port, pad) PAL_LOW
+#define pal_lld_readpad(port, pad) PAL_LOW
+  ((port)->MASKED_ACCESS[1 << (pad)])
 
 /**
  * @brief   Writes a logical state on an output pad.
@@ -371,7 +358,7 @@ typedef GPIO_TypeDef *ioportid_t;
  * @notapi
  */
 #define pal_lld_writepad(port, pad, bit)    \
-  ((port)->MASKED_ACCESS[(mask) << (pad)] = (bit) << (pad))
+  ((port)->MASKED_ACCESS[1 << (pad)] = (bit))
 
 /**
  * @brief   Sets a pad logical state to @p PAL_HIGH.
@@ -400,39 +387,6 @@ typedef GPIO_TypeDef *ioportid_t;
  */
 #define pal_lld_clearpad(port, pad) \
   ((port)->MASKED_ACCESS[1 << (pad)] = 0)
-
-/**
- * @brief   Toggles a pad logical state.
- * @note    The @ref PAL provides a default software implementation of this
- *          functionality, implement this function if can optimize it by using
- *          special hardware functionalities or special coding.
- *
- * @param[in] port      port identifier
- * @param[in] pad       pad number within the port
- *
- * @notapi
- */
- 
-//#define pal_lld_togglepad(port, pad)
-  
-  //palTogglePort(port, PAL_PORT_BIT(pad))
-  //((port)->MASKED_ACCESS[1 << (pad)]) &= ~((port)->MASKED_ACCESS[1 << (pad)])
-
-/**
- * @brief   Pad mode setup.
- * @details This function programs a pad with the specified mode.
- * @note    The @ref PAL provides a default software implementation of this
- *          functionality, implement this function if can optimize it by using
- *          special hardware functionalities or special coding.
- * @note    Programming an unknown or unsupported mode is silently ignored.
- *
- * @param[in] port      port identifier
- * @param[in] pad       pad number within the port
- * @param[in] mode      pad mode
- *
- * @notapi
- */
-//#define pal_lld_setpadmode(port, pad, mode)
 
 #if !defined(__DOXYGEN__)
 extern const PALConfig pal_default_config;

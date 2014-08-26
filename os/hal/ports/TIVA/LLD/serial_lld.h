@@ -1,6 +1,6 @@
 /**
- * @file    TM4C129x/serial_lld.h
- * @brief   TM4C129x low level serial driver header.
+ * @file    TIVA/LLD/serial_lld.h
+ * @brief   Tiva low level serial driver header.
  *
  * @addtogroup SERIAL
  * @{
@@ -369,7 +369,7 @@
 /*===========================================================================*/
 
 /**
- * @brief   TM4C123x Serial Driver configuration structure.
+ * @brief   Tiva Serial Driver configuration structure.
  * @details An instance of this structure must be passed to @p sdStart()
  *          in order to configure and start a serial driver operations.
  */
