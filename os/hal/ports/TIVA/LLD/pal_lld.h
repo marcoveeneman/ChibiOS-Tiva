@@ -16,7 +16,7 @@
 
 /**
  * @file    TIVA/LLD/pal_lld.h
- * @brief   Tiva PAL subsystem low level driver header.
+ * @brief   TM4C123x/TM4C129x PAL subsystem low level driver header.
  *
  * @addtogroup PAL
  * @{
@@ -66,7 +66,7 @@ typedef struct
   uint32_t amsel;
   /** @brief Initial value for PCTL register.*/
   uint32_t pctl;
-} tm4c123x_gpio_setup_t;
+} tiva_gpio_setup_t;
 
 /**
  * @brief   Tiva GPIO static initializer.
@@ -78,52 +78,61 @@ typedef struct
 typedef struct
 {
   /** @brief Port A setup data.*/
-  tm4c123x_gpio_setup_t     PAData;
+  tiva_gpio_setup_t     PAData;
   /** @brief Port B setup data.*/
-  tm4c123x_gpio_setup_t     PBData;
+  tiva_gpio_setup_t     PBData;
   /** @brief Port C setup data.*/
-  tm4c123x_gpio_setup_t     PCData;
+  tiva_gpio_setup_t     PCData;
   /** @brief Port D setup data.*/
-  tm4c123x_gpio_setup_t     PDData;
+  tiva_gpio_setup_t     PDData;
   /** @brief Port E setup data.*/
-  tm4c123x_gpio_setup_t     PEData;
+  tiva_gpio_setup_t     PEData;
   /** @brief Port F setup data.*/
-  tm4c123x_gpio_setup_t     PFData;
+  tiva_gpio_setup_t     PFData;
+
 #if TIVA_HAS_GPIOG || defined(__DOXYGEN__)
   /** @brief Port G setup data.*/
-  tm4c123x_gpio_setup_t     PGData;
+  tiva_gpio_setup_t     PGData;
 #endif /* TIVA_HAS_GPIOG.*/
+
 #if TIVA_HAS_GPIOH || defined(__DOXYGEN__)
   /** @brief Port H setup data.*/
-  tm4c123x_gpio_setup_t     PHData;
+  tiva_gpio_setup_t     PHData;
 #endif /* TIVA_HAS_GPIOH.*/
+
 #if TIVA_HAS_GPIOJ || defined(__DOXYGEN__)
   /** @brief Port J setup data.*/
-  tm4c123x_gpio_setup_t     PJData;
+  tiva_gpio_setup_t     PJData;
 #endif /* TIVA_HAS_GPIOJ.*/
+
 #if TIVA_HAS_GPIOK || defined(__DOXYGEN__)
   /** @brief Port K setup data.*/
-  tm4c123x_gpio_setup_t     PKData;
+  tiva_gpio_setup_t     PKData;
 #endif /* TIVA_HAS_GPIOK.*/
+
 #if TIVA_HAS_GPIOL || defined(__DOXYGEN__)
   /** @brief Port L setup data.*/
-  tm4c123x_gpio_setup_t     PLData;
+  tiva_gpio_setup_t     PLData;
 #endif /* TIVA_HAS_GPIOL.*/
+
 #if TIVA_HAS_GPIOM || defined(__DOXYGEN__)
   /** @brief Port M setup data.*/
-  tm4c123x_gpio_setup_t     PMData;
+  tiva_gpio_setup_t     PMData;
 #endif /* TIVA_HAS_GPIOM.*/
+
 #if TIVA_HAS_GPION || defined(__DOXYGEN__)
   /** @brief Port N setup data.*/
-  tm4c123x_gpio_setup_t     PNData;
+  tiva_gpio_setup_t     PNData;
 #endif /* TIVA_HAS_GPION.*/
+
 #if TIVA_HAS_GPIOP || defined(__DOXYGEN__)
   /** @brief Port P setup data.*/
-  tm4c123x_gpio_setup_t     PPData;
+  tiva_gpio_setup_t     PPData;
 #endif /* TIVA_HAS_GPIOP.*/
+
 #if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
   /** @brief Port Q setup data.*/
-  tm4c123x_gpio_setup_t     PQData;
+  tiva_gpio_setup_t     PQData;
 #endif /* TIVA_HAS_GPIOQ.*/
 } PALConfig;
 
@@ -355,8 +364,7 @@ typedef GPIO_TypeDef *ioportid_t;
  *
  * @notapi
  */
-#define pal_lld_readpad(port, pad) PAL_LOW
-  ((port)->MASKED_ACCESS[1 << (pad)])
+#define pal_lld_readpad(port, pad) ((port)->MASKED_ACCESS[1 << (pad)])
 
 /**
  * @brief   Writes a logical state on an output pad.

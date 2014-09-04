@@ -35,6 +35,14 @@
  */
 
 /*
+ * I2C units.
+ */
+#define TIVA_I2C0_HANDLER                   Vector60
+#define TIVA_I2C1_HANDLER                   VectorD4
+#define TIVA_I2C2_HANDLER                   Vector150
+#define TIVA_I2C3_HANDLER                   Vector154
+
+/*
  * UART units.
  */
 #define TIVA_UART0_HANDLER                  Vector54

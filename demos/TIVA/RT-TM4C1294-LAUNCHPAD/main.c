@@ -1,114 +1,18 @@
-//#include "ch.h"
-//#include "hal.h"
-//#include "test.h"
-//
-///*
-// * LED blinker thread, times are in milliseconds.
-// */
-//static THD_WORKING_AREA(waThread1, 128);
-//static msg_t Thread1(void *arg)
-//{
-//  (void)arg;
-//  chRegSetThreadName("Led blinker1");
-//  while (TRUE) {
-//    palTogglePad(GPIOF, GPIOF_LED0);
-//    chThdSleepMilliseconds(100);
-//  }
-//
-//  return 0;
-//}
-//
-///*
-// * LED blinker thread, times are in milliseconds.
-// */
-//static THD_WORKING_AREA(waThread2, 128);
-//static msg_t Thread2(void *arg)
-//{
-//  (void)arg;
-//  chRegSetThreadName("Led blinker2");
-//  while (TRUE) {
-//    palTogglePad(GPIOF, GPIOF_LED1);
-//    chThdSleepMilliseconds(200);
-//  }
-//
-//  return 0;
-//}
-//
-///*
-// * LED blinker thread, times are in milliseconds.
-// */
-//static THD_WORKING_AREA(waThread3, 128);
-//static msg_t Thread3(void *arg)
-//{
-//  (void)arg;
-//  chRegSetThreadName("Led blinker3");
-//  while (TRUE) {
-//    palTogglePad(GPION, GPION_LED2);
-//    chThdSleepMilliseconds(400);
-//  }
-//
-//  return 0;
-//}
-//
-///*
-// * LED blinker thread, times are in milliseconds.
-// */
-//static THD_WORKING_AREA(waThread4, 128);
-//static msg_t Thread4(void *arg)
-//{
-//  (void)arg;
-//  chRegSetThreadName("Led blinker4");
-//  while (TRUE) {
-//    palTogglePad(GPION, GPION_LED3);
-//    chThdSleepMilliseconds(800);
-//  }
-//
-//  return 0;
-//}
-//
-///*
-// * Application entry point.
-// */
-//int main(void)
-//{
-//  //uint32_t dummy;
-//  /*
-//   * System initializations.
-//   * - HAL initialization, this also initializes the configured device drivers
-//   *   and performs the board-specific initializations.
-//   * - Kernel initialization, the main() function becomes a thread and the
-//   *   RTOS is active.
-//   */
-//  halInit();
-//  chSysInit();
-//
-//  /*
-//   * Start the serial driver with the default configuration.
-//   */
-//  sdStart(&SD1, NULL);
-//
-//  /*
-//   * Start the test thread
-//   */
-//  TestThread(&SD1);
-//
-//  /*
-//   * Creating the blinker threads.
-//   */
-//  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
-//  chThdCreateStatic(waThread2, sizeof(waThread2), NORMALPRIO, Thread2, NULL);
-//  chThdCreateStatic(waThread3, sizeof(waThread3), NORMALPRIO, Thread3, NULL);
-//  chThdCreateStatic(waThread4, sizeof(waThread4), NORMALPRIO, Thread4, NULL);
-//
-//  /*
-//   * Normal main() thread activity
-//   */
-//  while (TRUE) {
-//    chThdSleepMilliseconds(500);
-//  }
-//
-//  return 0;
-//}
+/*
+    Copyright (C) 2014 Marco Veeneman
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
 
 #include "ch.h"
 #include "hal.h"
