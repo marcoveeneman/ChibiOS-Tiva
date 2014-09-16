@@ -74,6 +74,7 @@ void tiva_clock_init(void) {
    * PLL configuration to be validated before switching the system clock to the
    * PLL. */
   /* read */
+
   rcc = SYSCTL->RCC;
   rcc2 = SYSCTL->RCC2;
   
@@ -121,8 +122,8 @@ void tiva_clock_init(void) {
   /* 5. Enable use of the PLL by clearing the BYPASS bit in RCC and RCC2. */
   rcc &= ~TIVA_RCC_BYPASS;
   rcc2 &= ~TIVA_RCC2_BYPASS2;
-  rcc |= TIVA_BYPASS;
-  rcc2 |= TIVA_BYPASS;
+  rcc |= (TIVA_BYPASS_VALUE << 11);
+  rcc2 |= (TIVA_BYPASS_VALUE << 11);
   SYSCTL->RCC = rcc;
   SYSCTL->RCC2 = rcc2;
 }

@@ -172,27 +172,31 @@
  */
 
 #if !defined(TIVA_OSCSRC)
-#define TIVA_OSCSRC                     TIVA_RCC_OSCSRC_PIOSC
+#define TIVA_OSCSRC                     TIVA_RCC2_OSCSRC2_MOSC
 #endif
 
 #if !defined(TIVA_MOSC_ENABLE)
-#define TIVA_MOSC_ENABLE                FALSE
+#define TIVA_MOSC_ENABLE                TRUE
 #endif
 
-#if !defined(TIVA_DIV400_ENABLE)
-#define TIVA_DIV400_ENABLE              TRUE
+#if !defined(TIVA_DIV400_VALUE)
+#define TIVA_DIV400_VALUE               1
 #endif
 
 #if !defined(TIVA_SYSDIV_VALUE)
 #define TIVA_SYSDIV_VALUE               2
 #endif
 
+#if !defined(TIVA_USESYSDIV_ENABLE)
+#define TIVA_USESYSDIV_ENABLE           FALSE
+#endif
+
 #if !defined(TIVA_SYSDIV2LSB_ENABLE)
 #define TIVA_SYSDIV2LSB_ENABLE          FALSE
 #endif
 
-#if !defined(TIVA_BYPASS_ENABLE)
-#define TIVA_BYPASS_ENABLE              FALSE
+#if !defined(TIVA_BYPASS_VALUE)
+#define TIVA_BYPASS_VALUE               0
 #endif
 
 /**
@@ -277,12 +281,12 @@
 #error "Invalid value for TIVA_MOSC_ENABLE defined"
 #endif
 
-#if TIVA_DIV400_ENABLE == TRUE
+#if TIVA_DIV400_VALUE == 1
 #define TIVA_DIV400             (1 << 30)
-#elif TIVA_DIV400_ENABLE == FALSE
+#elif TIVA_DIV400_VALUE == 0
 #define TIVA_DIV400             (0 << 30)
 #else
-#error "Invalid value for TIVA_DIV400_ENABLE defined"
+#error "Invalid value for TIVA_DIV400_VALUE defined"
 #endif
 
 #if (TIVA_SYSDIV_VALUE >= 0x02) && (TIVA_SYSDIV_VALUE <= 0x3f)
@@ -308,14 +312,12 @@
 #error "Invalid value for TIVA_SYSDIV2LSB_ENABLE defined"
 #endif
 
-#if TIVA_BYPASS_ENABLE == TRUE
+#if TIVA_BYPASS_VALUE == 1
 #define TIVA_SRC                16000000
-#define TIVA_BYPASS             (1 << 11)
-#elif TIVA_BYPASS_ENABLE == FALSE
-#define TIVA_SRC                (200000000 + ((TIVA_DIV400 >> 30) * 200000000))
-#define TIVA_BYPASS             (0 << 11)
+#elif TIVA_BYPASS_VALUE == 0
+#define TIVA_SRC                (200000000 + (TIVA_DIV400_VALUE * 200000000))
 #else
-#error "Invalid value for TIVA_BYPASS_ENABLE defined"
+#error "Invalid value for TIVA_BYPASS_VALUE defined"
 #endif
 
 #if (TIVA_OSCSRC == TIVA_RCC_OSCSRC_MOSC) && (TIVA_MOSC_ENABLE == FALSE)
@@ -325,7 +327,7 @@
 /*
  * System Clock calculation 
  */
-#define TIVA_SYSCLK             (TIVA_SRC / (((TIVA_SYSDIV_VALUE << (TIVA_DIV400 >> 30) & (TIVA_BYPASS >> 11)) | (TIVA_SYSDIV2LSB >> 22)) + 1))
+#define TIVA_SYSCLK             (TIVA_SRC / (((TIVA_SYSDIV_VALUE << TIVA_DIV400_VALUE /*& TIVA_BYPASS_VALUE*/) | (TIVA_SYSDIV2LSB >> 22)) + 1))
 
 #if OSAL_ST_MODE == OSAL_ST_MODE_PERIODIC && \
     !CORTEX_IS_VALID_KERNEL_PRIORITY(TIVA_ST_IRQ_PRIORITY)

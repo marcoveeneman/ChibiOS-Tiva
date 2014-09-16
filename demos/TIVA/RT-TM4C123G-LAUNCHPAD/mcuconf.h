@@ -16,11 +16,11 @@
  */
 #define TIVA_OSCSRC                         TIVA_RCC2_OSCSRC2_MOSC
 #define TIVA_MOSC_ENABLE                    TRUE
-#define TIVA_DIV400_ENABLE                  TRUE
+#define TIVA_DIV400_VALUE                   1
 #define TIVA_SYSDIV_VALUE                   2
 #define TIVA_USESYSDIV_ENABLE               FALSE
 #define TIVA_SYSDIV2LSB_ENABLE              FALSE
-#define TIVA_BYPASS_ENABLE                  TRUE
+#define TIVA_BYPASS_VALUE                   0
 
 /*
  * GPIO Lock register password: "LOCK"
