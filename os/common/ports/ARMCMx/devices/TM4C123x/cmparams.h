@@ -57,7 +57,32 @@
 /* If the device type is not externally defined, for example from the Makefile,
    then a file named board.h is included. This file must contain a device
    definition compatible with the include file.*/
-#if !defined(TM4C123G)
+#if !defined(TM4C1230C3PM) && !defined(TM4C1230D5PM) &&                       \
+  !defined(TM4C1230E6PM) && !defined(TM4C1230H6PM) &&                         \
+  !defined(TM4C1231C3PM) && !defined(TM4C1231D5PM) &&                         \
+  !defined(TM4C1231D5PZ) && !defined(TM4C1231E6PM) &&                         \
+  !defined(TM4C1231E6PZ) && !defined(TM4C1231H6PGE) &&                        \
+  !defined(TM4C1231H6PM) && !defined(TM4C1231H6PZ) &&                         \
+  !defined(TM4C1232C3PM) && !defined(TM4C1232D5PM) &&                         \
+  !defined(TM4C1232E6PM) && !defined(TM4C1232H6PM) &&                         \
+  !defined(TM4C1233C3PM) && !defined(TM4C1233D5PM) &&                         \
+  !defined(TM4C1233D5PZ) && !defined(TM4C1233E6PM) &&                         \
+  !defined(TM4C1233E6PZ) && !defined(TM4C1233H6PGE) &&                        \
+  !defined(TM4C1233H6PM) && !defined(TM4C1233H6PZ) &&                         \
+  !defined(TM4C1236D5PM) && !defined(TM4C1236E6PM) &&                         \
+  !defined(TM4C1236H6PM) && !defined(TM4C1237D5PM) &&                         \
+  !defined(TM4C1237D5PZ) && !defined(TM4C1237E6PM) &&                         \
+  !defined(TM4C1237E6PZ) && !defined(TM4C1237H6PGE) &&                        \
+  !defined(TM4C1237H6PM) && !defined(TM4C1237H6PZ) &&                         \
+  !defined(TM4C123AE6PM) && !defined(TM4C123AH6PM) &&                         \
+  !defined(TM4C123BE6PM) && !defined(TM4C123BE6PZ) &&                         \
+  !defined(TM4C123BH6PGE) && !defined(TM4C123BH6PM) &&                        \
+  !defined(TM4C123BH6PZ) && !defined(TM4C123BH6ZRB) &&                        \
+  !defined(TM4C123FE6PM) && !defined(TM4C123FH6PM) &&                         \
+  !defined(TM4C123GE6PM) && !defined(TM4C123GE6PZ) &&                         \
+  !defined(TM4C123GH6PGE) && !defined(TM4C123GH6PM) &&                        \
+  !defined(TM4C123GH6PZ) && !defined(TM4C123GH6ZRB) &&                        \
+  !defined(TM4C123GH5ZXR)
 #include "board.h"
 #endif
 

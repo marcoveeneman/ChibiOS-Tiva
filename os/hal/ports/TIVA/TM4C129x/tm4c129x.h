@@ -847,7 +847,55 @@ typedef struct
   __I  uint32_t PP;             /**< Peripheral Properties                   */
 } AC_TypeDef;
 
-// pwm
+typedef struct
+{
+  __IO uint32_t CTL;            /**< Control                                 */
+  __IO uint32_t INTEN;          /**< Interrupt and Trigger Enable            */
+  __I  uint32_t RIS;            /**< Raw Interrupt Status                    */
+  __IO uint32_t ISC;            /**< Interrupt Status and Clear              */
+  __IO uint32_t LOAD;           /**< Load                                    */
+  __I  uint32_t COUNT;          /**< Counter                                 */
+  __IO uint32_t CMP[2];         /**< Compare A, B                            */
+  __IO uint32_t GEN[2];         /**< Generator A, B Control                  */
+  __IO uint32_t DBCTL;          /**< Dead-Band Control                       */
+  __IO uint32_t DBRISE;         /**< Dead-Band Rising-Edge Delay             */
+  __IO uint32_t DBFALL;         /**< Dead-Band Falling-Edge Delay            */
+  __IO uint32_t FLTSRC[2];      /**< Fault Source 0, 1                       */
+  __IO uint32_t MINFLTPER;      /**< Minimum Fault Period                    */
+} PWM_GENERATOR_T;
+
+/*
+ * @brief Pulse Width Modulator
+ */
+typedef struct
+{
+  __IO uint32_t CTL;            /**< Master Control                          */
+  __IO uint32_t SYNC;           /**< Time Base Sync                          */
+  __IO uint32_t ENABLE;         /**< Output Enable                           */
+  __IO uint32_t INVERT;         /**< Output Inversion                        */
+  __IO uint32_t FAULT;          /**< Output Fault                            */
+  __IO uint32_t INTEN;          /**< Interrupt Enable                        */
+  __I  uint32_t RIS;            /**< Raw Interrupt Status                    */
+  __IO uint32_t ISC;            /**< Interrupt Status and Clear              */
+  __I  uint32_t STATUS;         /**< Status                                  */
+  __IO uint32_t FAULTVAL;       /**< Fault Condition Value                   */
+  __IO uint32_t ENUPD;          /**< Enable Update                           */
+  __I  uint32_t RESERVED0[5];   /**< Reserved                                */
+  __IO PWM_GENERATOR_T PWM[4];  /**< PWM Generator 0, 1, 2 and 3             */
+  __I  uint32_t RESERVED1[432]; /**< Reserved                                */
+  __IO uint32_t _0FLTSEN;       /**< Fault Pin Logic Sense                   */
+  __IO uint32_t _0FLTSTAT[2];   /**< Fault Status 0, 1                       */
+  __I  uint32_t RESERVED2[29];  /**< Reserved                                */
+  __IO uint32_t _1FLTSEN;       /**< Fault Pin Logic Sense                   */
+  __IO uint32_t _1FLSTSAT[2];   /**< Fault Status 0, 1                       */
+  __I  uint32_t RESERVED3[30];  /**< Reserved                                */
+  __IO uint32_t _2FLTSTAT[2];   /**< Fault Status 0, 1                       */
+  __I  uint32_t RESERVED4[30];  /**< Reserved                                */
+  __IO uint32_t _3FLTSTAT[2];   /**< Fault Status 0, 1                       */
+  __I  uint32_t RESERVED5[397]; /**< Reserved                                */
+  __I  uint32_t PP;             /**< Peripheral Properties                   */
+  __IO uint32_t CC;             /**< Clock Configuration                     */
+} PWM_TypeDef;
 
 /** 
  * @brief Quadrature Encoder Interface
@@ -932,7 +980,7 @@ typedef struct
 #define CAN1_BASE   0x40041000
 // usb
 #define AC_BASE     0x4003C000
-// pwm
+#define PWM0_BASE   0x40028000
 #define QEI0_BASE   0x4002C000
 #define QEI1_BASE   0x4002D000
 
@@ -999,7 +1047,7 @@ typedef struct
 #define CAN1    ((CAN_TypeDef *)    CAN1_BASE)
 // usb
 #define AC      ((AC_TypeDef *)     AC_BASE)
-// pwm
+#define PWM0    ((PWM_TypeDef *)    PWM0_BASE)
 #define QEI0    ((QEI_TypeDef *)    QEI0_BASE)
 #define QEI1    ((QEI_TypeDef *)    QEI1_BASE)
 

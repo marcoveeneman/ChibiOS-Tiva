@@ -38,63 +38,85 @@
 #define RCGCGPIOF       (1 << 5)
 
 #if TIVA_HAS_GPIOG || defined(__DOXYGEN__)
-#define RCGCGPIOG       (1 << 6);
+#define RCGCGPIOG       (1 << 6)
 #else
 #define RCGCGPIOG       0
 #endif
 
 #if TIVA_HAS_GPIOH || defined(__DOXYGEN__)
-#define RCGCGPIOH       (1 << 7);
+#define RCGCGPIOH       (1 << 7)
 #else
 #define RCGCGPIOH       0
 #endif
 
 #if TIVA_HAS_GPIOJ || defined(__DOXYGEN__)
-#define RCGCGPIOJ       (1 << 8);
+#define RCGCGPIOJ       (1 << 8)
 #else
 #define RCGCGPIOJ       0
 #endif
 
 #if TIVA_HAS_GPIOK || defined(__DOXYGEN__)
-#define RCGCGPIOK       (1 << 9);
+#define RCGCGPIOK       (1 << 9)
 #else
 #define RCGCGPIOK       0
 #endif
 
 #if TIVA_HAS_GPIOL || defined(__DOXYGEN__)
-#define RCGCGPIOL       (1 << 10);
+#define RCGCGPIOL       (1 << 10)
 #else
 #define RCGCGPIOL       0
 #endif
 
 #if TIVA_HAS_GPIOM || defined(__DOXYGEN__)
-#define RCGCGPIOM       (1 << 11);
+#define RCGCGPIOM       (1 << 11)
 #else
 #define RCGCGPIOM       0
 #endif
 
 #if TIVA_HAS_GPION || defined(__DOXYGEN__)
-#define RCGCGPION       (1 << 12);
+#define RCGCGPION       (1 << 12)
 #else
 #define RCGCGPION       0
 #endif
 
 #if TIVA_HAS_GPIOP || defined(__DOXYGEN__)
-#define RCGCGPIOP       (1 << 13);
+#define RCGCGPIOP       (1 << 13)
 #else
 #define RCGCGPIOP       0
 #endif
 
 #if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
-#define RCGCGPIOQ       (1 << 14);
+#define RCGCGPIOQ       (1 << 14)
 #else
 #define RCGCGPIOQ       0
 #endif
 
-#define RCGCGPIO_VALUE  (RCGCGPIOA | RCGCGPIOB | RCGCGPIOC | RCGCGPIOD | \
-                         RCGCGPIOE | RCGCGPIOF | RCGCGPIOG | RCGCGPIOH | \
-                         RCGCGPIOJ | RCGCGPIOK | RCGCGPIOL | RCGCGPIOM | \
-                         RCGCGPION | RCGCGPIOP | RCGCGPIOQ)
+#if TIVA_HAS_GPIOR || defined(__DOXYGEN__)
+#define RCGCGPIOR       (1 << 15)
+#else
+#define RCGCGPIOR       0
+#endif
+
+#if TIVA_HAS_GPIOS || defined(__DOXYGEN__)
+#define RCGCGPIOS       (1 << 16)
+#else
+#define RCGCGPIOS       0
+#endif
+
+#if TIVA_HAS_GPIOT || defined(__DOXYGEN__)
+#define RCGCGPIOT       (1 << 17)
+#else
+#define RCGCGPIOT       0
+#endif
+
+#define RCGCGPIO_VALUE  (RCGCGPIOA | RCGCGPIOB | RCGCGPIOC | RCGCGPIOD |      \
+                         RCGCGPIOE | RCGCGPIOF | RCGCGPIOG | RCGCGPIOH |      \
+                         RCGCGPIOJ | RCGCGPIOK | RCGCGPIOL | RCGCGPIOM |      \
+                         RCGCGPION | RCGCGPIOP | RCGCGPIOQ | RCGCGPIOR |      \
+                         RCGCGPIOS | RCGCGPIOT)
+
+/* GPIO lock password.*/
+#define TIVA_GPIO_LOCK_PWD                  0x4C4F434B
 
 /*===========================================================================*/
 /* Driver exported variables.                                                */
@@ -135,7 +157,7 @@ void gpio_init (GPIO_TypeDef *gpiop, const tiva_gpio_setup_t *config)
 
 /**
  * @brief   TIVA I/O ports configuration.
- * @details Ports A-F (G, H, J, K, L, M, N, P, Q) clocks enabled.
+ * @details Ports A-F (G, H, J, K, L, M, N, P, Q, R, S, T) clocks enabled.
  *
  * @param[in] config    the TIVA ports configuration
  *
@@ -202,6 +224,18 @@ void _pal_lld_init(const PALConfig *config)
 #if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
   gpio_init(GPIOQ, &config->PQData);
 #endif /* TIVA_HAS_GPIOQ.*/
+
+#if TIVA_HAS_GPIOR || defined(__DOXYGEN__)
+  gpio_init(GPIOR, &config->PRData);
+#endif /* TIVA_HAS_GPIOR.*/
+
+#if TIVA_HAS_GPIOS || defined(__DOXYGEN__)
+  gpio_init(GPIOS, &config->PSData);
+#endif /* TIVA_HAS_GPIOS.*/
+
+#if TIVA_HAS_GPIOT || defined(__DOXYGEN__)
+  gpio_init(GPIOT, &config->PTData);
+#endif /* TIVA_HAS_GPIOT.*/
 }
 
 /**

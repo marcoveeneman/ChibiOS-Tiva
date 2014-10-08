@@ -21,11 +21,8 @@
 #define TIVA_USESYSDIV_ENABLE               FALSE
 #define TIVA_SYSDIV2LSB_ENABLE              FALSE
 #define TIVA_BYPASS_VALUE                   0
-
-/*
- * GPIO Lock register password: "LOCK"
- */
-#define TIVA_GPIO_LOCK_PWD                  0x4C4F434B
+#define TIVA_PWM_FIELDS                     (TIVA_RCC_USEPWMDIV |            \
+                                             TIVA_RCC_PWMDIV_8)
 
 /*
  * GPT driver system settings.
@@ -75,6 +72,22 @@
 #define TIVA_I2C_I2C5_IRQ_PRIORITY          4
 #define TIVA_I2C_I2C6_IRQ_PRIORITY          4
 #define TIVA_I2C_I2C7_IRQ_PRIORITY          4
+
+/*
+ * PWM driver system settings.
+ */
+#define TIVA_PWM_USE_PWM0                   FALSE
+#define TIVA_PWM_USE_PWM1                   FALSE
+#define TIVA_PWM_PWM0_FAULT_IRQ_PRIORITY    4
+#define TIVA_PWM_PWM0_0_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_1_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_2_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_3_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM1_FAULT_IRQ_PRIORITY    4
+#define TIVA_PWM_PWM1_0_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM1_1_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM1_2_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM1_3_IRQ_PRIORITY        4
 
 /*
  * SERIAL driver system settings.

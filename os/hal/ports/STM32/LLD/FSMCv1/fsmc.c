@@ -25,10 +25,10 @@
  * @addtogroup FSMC
  * @{
  */
-
 #include "hal.h"
+#include "fsmc.h"
 
-#if HAL_USE_NAND || defined(__DOXYGEN__)
+#if HAL_USE_NAND || STM32_USE_FSMC_SRAM || defined(__DOXYGEN__)
 
 /*===========================================================================*/
 /* Driver local definitions.                                                 */
@@ -72,19 +72,37 @@ FSMCDriver FSMCD1;
  */
 void fsmc_init(void) {
 
-  FSMCD1.state  = FSMC_STOP;
+  if (FSMCD1.state == FSMC_UNINIT) {
+    FSMCD1.state  = FSMC_STOP;
+
+#if STM32_SRAM_USE_FSMC_SRAM1
+    FSMCD1.sram1 = (FSMC_SRAM_NOR_TypeDef *)(FSMC_Bank1_R_BASE);
+#endif
+
+#if STM32_SRAM_USE_FSMC_SRAM2
+    FSMCD1.sram2 = (FSMC_SRAM_NOR_TypeDef *)(FSMC_Bank1_R_BASE + 8);
+#endif
+
+#if STM32_SRAM_USE_FSMC_SRAM3
+    FSMCD1.sram3 = (FSMC_SRAM_NOR_TypeDef *)(FSMC_Bank1_R_BASE + 8 * 2);
+#endif
+
+#if STM32_SRAM_USE_FSMC_SRAM4
+    FSMCD1.sram4 = (FSMC_SRAM_NOR_TypeDef *)(FSMC_Bank1_R_BASE + 8 * 3);
+#endif
 
 #if STM32_NAND_USE_FSMC_NAND1
-  FSMCD1.nand1 = (FSMC_NAND_TypeDef *)FSMC_Bank2_R_BASE;
+    FSMCD1.nand1 = (FSMC_NAND_TypeDef *)FSMC_Bank2_R_BASE;
 #endif
 
 #if STM32_NAND_USE_FSMC_NAND2
-  FSMCD1.nand2 = (FSMC_NAND_TypeDef *)FSMC_Bank3_R_BASE;
+    FSMCD1.nand2 = (FSMC_NAND_TypeDef *)FSMC_Bank3_R_BASE;
 #endif
 
 #if STM32_USE_FSMC_PCCARD
-  FSMCD1.pccard = (FSMC_PCCARD_TypeDef *)FSMC_Bank4_R_BASE;
+    FSMCD1.pccard = (FSMC_PCCARD_TypeDef *)FSMC_Bank4_R_BASE;
 #endif
+  }
 }
 
 /**
@@ -96,7 +114,6 @@ void fsmc_init(void) {
  */
 void fsmc_start(FSMCDriver *fsmcp) {
 
-
   osalDbgAssert((fsmcp->state == FSMC_STOP) || (fsmcp->state == FSMC_READY),
               "invalid state");
 
@@ -106,7 +123,7 @@ void fsmc_start(FSMCDriver *fsmcp) {
     if (&FSMCD1 == fsmcp) {
       rccResetFSMC();
       rccEnableFSMC(FALSE);
-#if !STM32_NAND_USE_EXT_INT
+#if (!STM32_NAND_USE_EXT_INT && HAL_USE_NAND)
       nvicEnableVector(STM32_FSMC_NUMBER, STM32_FSMC_FSMC1_IRQ_PRIORITY);
 #endif
     }
@@ -132,7 +149,7 @@ void fsmc_stop(FSMCDriver *fsmcp) {
     /* Disables the peripheral.*/
 #if STM32_FSMC_USE_FSMC1
     if (&FSMCD1 == fsmcp) {
-#if !STM32_NAND_USE_EXT_INT
+#if (!STM32_NAND_USE_EXT_INT && HAL_USE_NAND)
       nvicDisableVector(STM32_FSMC_NUMBER);
 #endif
       rccDisableFSMC(FALSE);
@@ -166,6 +183,6 @@ CH_IRQ_HANDLER(STM32_FSMC_HANDLER) {
 }
 #endif /* !STM32_NAND_USE_EXT_INT */
 
-#endif /* HAL_USE_FSMC */
+#endif /* HAL_USE_FSMC || STM32_USE_FSMC_SRAM */
 
 /** @} */

@@ -57,7 +57,16 @@
 /* If the device type is not externally defined, for example from the Makefile,
    then a file named board.h is included. This file must contain a device
    definition compatible with the include file.*/
-#if !defined(TM4C1294)
+#if !defined(TM4C1290NCPDT) && !defined(TM4C1290NCZAD)                        \
+  && !defined(TM4C1292NCPDT) && !defined(TM4C1292NCZAD)                       \
+  && !defined(TM4C1294KCPDT) && !defined(TM4C1294NCPDT)                       \
+  && !defined(TM4C1294NCZAD) && !defined(TM4C1297NCZAD)                       \
+  && !defined(TM4C1299KCZAD) && !defined(TM4C1299NCZAD)                       \
+  && !defined(TM4C129CNCPDT) && !defined(TM4C129CNCZAD)                       \
+  && !defined(TM4C129DNCPDT) && !defined(TM4C129DNCZAD)                       \
+  && !defined(TM4C129EKCPDT) && !defined(TM4C129ENCPDT)                       \
+  && !defined(TM4C129ENCZAD) && !defined(TM4C129LNCZAD)                       \
+  && !defined(TM4C129XKCZAD) && !defined(TM4C129XNCZAD)
 #include "board.h"
 #endif
 

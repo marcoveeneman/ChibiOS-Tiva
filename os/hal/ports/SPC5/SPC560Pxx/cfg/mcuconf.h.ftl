@@ -236,7 +236,6 @@
 #define SPC5_ME_RUN3_MC_BITS                (0${decode_mc(conf.instance.initialization_settings.module_entry.run_modes.run3_state_settings)})
 #define SPC5_ME_HALT0_MC_BITS               (0${decode_mc(conf.instance.initialization_settings.module_entry.run_modes.halt0_state_settings)})
 #define SPC5_ME_STOP0_MC_BITS               (0${decode_mc(conf.instance.initialization_settings.module_entry.run_modes.stop0_state_settings)})
-#define SPC5_ME_RUN_PC2_BITS                (0${decode_runpc(conf.instance.initialization_settings.module_entry.peripherals_control__run_.pc2)})
 #define SPC5_ME_RUN_PC3_BITS                (0${decode_runpc(conf.instance.initialization_settings.module_entry.peripherals_control__run_.pc3)})
 #define SPC5_ME_RUN_PC4_BITS                (0${decode_runpc(conf.instance.initialization_settings.module_entry.peripherals_control__run_.pc4)})
 #define SPC5_ME_RUN_PC5_BITS                (0${decode_runpc(conf.instance.initialization_settings.module_entry.peripherals_control__run_.pc5)})

@@ -901,7 +901,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    msg_t waitTimeout(systime_t time);
+    msg_t wait(systime_t time);
 
     /**
      * @brief   Performs a wait operation on a semaphore with timeout
@@ -923,7 +923,7 @@ namespace chibios_rt {
      *
      * @sclass
      */
-    msg_t waitTimeoutS(systime_t time);
+    msg_t waitS(systime_t time);
 
     /**
      * @brief   Performs a signal operation on a semaphore.
@@ -1056,7 +1056,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    msg_t waitTimeout(systime_t time);
+    msg_t wait(systime_t time);
 
     /**
      * @brief   Wait operation on the binary semaphore.
@@ -1077,7 +1077,7 @@ namespace chibios_rt {
      *
      * @sclass
      */
-    msg_t waitTimeoutS(systime_t time);
+    msg_t waitS(systime_t time);
 
     /**
      * @brief   Reset operation on the binary semaphore.
@@ -1215,6 +1215,28 @@ namespace chibios_rt {
      * @sclass
      */
     void lockS(void);
+
+    /**
+     * @brief   Unlocks the next owned mutex in reverse lock order.
+     * @pre     The invoking thread <b>must</b> have at least one owned mutex.
+     * @post    The mutex is unlocked and removed from the per-thread stack of
+     *          owned mutexes.
+     *
+     * @api
+     */
+    void unlock(void);
+
+    /**
+     * @brief   Unlocks the next owned mutex in reverse lock order.
+     * @pre     The invoking thread <b>must</b> have at least one owned mutex.
+     * @post    The mutex is unlocked and removed from the per-thread stack of
+     *          owned mutexes.
+     * @post    This function does not reschedule so a call to a rescheduling
+     *          function must be performed before unlocking the kernel.
+     *
+     * @sclass
+     */
+    void unlockS(void);
   };
 
 #if CH_CFG_USE_CONDVARS || defined(__DOXYGEN__)
@@ -1326,7 +1348,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    msg_t waitTimeout(systime_t time);
+    msg_t wait(systime_t time);
 #endif /* CH_CFG_USE_CONDVARS_TIMEOUT */
   };
 #endif /* CH_CFG_USE_CONDVARS */
@@ -1577,7 +1599,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    msg_t getTimeout(systime_t time);
+    msg_t get(systime_t time);
 
     /**
      * @brief   Input queue read with timeout.
@@ -1602,7 +1624,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    size_t readTimeout(uint8_t *bp, size_t n, systime_t time);
+    size_t read(uint8_t *bp, size_t n, systime_t time);
   };
 
   /*------------------------------------------------------------------------*
@@ -1749,7 +1771,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    msg_t putTimeout(uint8_t b, systime_t time);
+    msg_t put(uint8_t b, systime_t time);
 
     /**
      * @brief   Output queue read.
@@ -1785,7 +1807,7 @@ namespace chibios_rt {
      *
      * @api
      */
-    size_t writeTimeout(const uint8_t *bp, size_t n, systime_t time);
+    size_t write(const uint8_t *bp, size_t n, systime_t time);
 };
 
   /*------------------------------------------------------------------------*
@@ -1821,10 +1843,14 @@ namespace chibios_rt {
    * chibios_rt::Mailbox                                                    *
    *------------------------------------------------------------------------*/
   /**
-   * @brief   Class encapsulating a mailbox.
+   * @brief   Base mailbox class.
+   *
+   * @param T               type of objects that mailbox able to handle
    */
-  class Mailbox {
+  template <typename T>
+  class MailboxBase {
   public:
+
     /**
      * @brief   Embedded @p ::Mailbox structure.
      */
@@ -1840,7 +1866,10 @@ namespace chibios_rt {
      *
      * @init
      */
-    Mailbox(msg_t *buf, cnt_t n);
+    MailboxBase(msg_t *buf, cnt_t n) {
+
+      chMBObjectInit(&mb, buf, n);
+    }
 
     /**
      * @brief   Resets a Mailbox object.
@@ -1849,7 +1878,10 @@ namespace chibios_rt {
      *
      * @api
      */
-    void reset(void);
+    void reset(void) {
+
+      chMBReset(&mb);
+    }
 
     /**
      * @brief   Posts a message into a mailbox.
@@ -1863,13 +1895,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @api
      */
-    msg_t post(msg_t msg, systime_t time);
+    msg_t post(T msg, systime_t time) {
+
+      return chMBPost(&mb, reinterpret_cast<msg_t>(msg), time);
+    }
 
     /**
      * @brief   Posts a message into a mailbox.
@@ -1883,13 +1918,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @sclass
      */
-    msg_t postS(msg_t msg, systime_t time);
+    msg_t postS(T msg, systime_t time) {
+
+      return chMBPostS(&mb, reinterpret_cast<msg_t>(msg), time);
+    }
 
     /**
      * @brief   Posts a message into a mailbox.
@@ -1898,13 +1936,16 @@ namespace chibios_rt {
      *
      * @param[in] msg       the message to be posted on the mailbox
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_TIMEOUT  if the mailbox is full and the message cannot be
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_TIMEOUT  if the mailbox is full and the message cannot be
      *                      posted.
      *
      * @iclass
      */
-    msg_t postI(msg_t msg);
+    msg_t postI(T msg) {
+
+      return chMBPostI(&mb, reinterpret_cast<msg_t>(msg));
+    }
 
     /**
      * @brief   Posts an high priority message into a mailbox.
@@ -1918,13 +1959,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @api
      */
-    msg_t postAhead(msg_t msg, systime_t time);
+    msg_t postAhead(T msg, systime_t time) {
+
+      return chMBPostAhead(&mb, reinterpret_cast<msg_t>(msg), time);
+    }
 
     /**
      * @brief   Posts an high priority message into a mailbox.
@@ -1938,13 +1982,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @sclass
      */
-    msg_t postAheadS(msg_t msg, systime_t time);
+    msg_t postAheadS(T msg, systime_t time) {
+
+      return chMBPostAheadS(&mb, reinterpret_cast<msg_t>(msg), time);
+    }
 
     /**
      * @brief   Posts an high priority message into a mailbox.
@@ -1953,13 +2000,16 @@ namespace chibios_rt {
      *
      * @param[in] msg       the message to be posted on the mailbox
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly posted.
-     * @retval RDY_TIMEOUT  if the mailbox is full and the message cannot be
+     * @retval MSG_OK       if a message has been correctly posted.
+     * @retval MSG_TIMEOUT  if the mailbox is full and the message cannot be
      *                      posted.
      *
      * @iclass
      */
-    msg_t postAheadI(msg_t msg);
+    msg_t postAheadI(T msg) {
+
+      return chMBPostAheadI(&mb, reinterpret_cast<msg_t>(msg));
+    }
 
     /**
      * @brief   Retrieves a message from a mailbox.
@@ -1973,13 +2023,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly fetched.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly fetched.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @api
      */
-    msg_t fetch(msg_t *msgp, systime_t time);
+    msg_t fetch(T *msgp, systime_t time) {
+
+      return chMBFetch(&mb, reinterpret_cast<msg_t*>(msgp), time);
+    }
 
     /**
      * @brief   Retrieves a message from a mailbox.
@@ -1993,13 +2046,16 @@ namespace chibios_rt {
      *                      - @a TIME_INFINITE no timeout.
      *                      .
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly fetched.
-     * @retval RDY_RESET    if the mailbox has been reset while waiting.
-     * @retval RDY_TIMEOUT  if the operation has timed out.
+     * @retval MSG_OK       if a message has been correctly fetched.
+     * @retval MSG_RESET    if the mailbox has been reset while waiting.
+     * @retval MSG_TIMEOUT  if the operation has timed out.
      *
      * @sclass
      */
-    msg_t fetchS(msg_t *msgp, systime_t time);
+    msg_t fetchS(T *msgp, systime_t time) {
+
+      return chMBFetchS(&mb, reinterpret_cast<msg_t*>(msgp), time);
+    }
 
     /**
      * @brief   Retrieves a message from a mailbox.
@@ -2009,13 +2065,16 @@ namespace chibios_rt {
      * @param[out] msgp     pointer to a message variable for the received
      *                      message
      * @return              The operation status.
-     * @retval RDY_OK       if a message has been correctly fetched.
-     * @retval RDY_TIMEOUT  if the mailbox is empty and a message cannot be
+     * @retval MSG_OK       if a message has been correctly fetched.
+     * @retval MSG_TIMEOUT  if the mailbox is empty and a message cannot be
      *                      fetched.
      *
      * @iclass
      */
-    msg_t fetchI(msg_t *msgp);
+    msg_t fetchI(T *msgp) {
+
+      return chMBFetchI(&mb, reinterpret_cast<msg_t*>(msgp));
+    }
 
     /**
      * @brief   Returns the number of free message slots into a mailbox.
@@ -2028,7 +2087,10 @@ namespace chibios_rt {
      *
      * @iclass
      */
-    cnt_t getFreeCountI(void);
+    cnt_t getFreeCountI(void) {
+
+      return chMBGetFreeCountI(&mb);
+    }
 
     /**
      * @brief   Returns the number of used message slots into a mailbox.
@@ -2041,30 +2103,33 @@ namespace chibios_rt {
      *
      * @iclass
      */
-    cnt_t getUsedCountI(void);
+    cnt_t getUsedCountI(void) {
+
+      return chMBGetUsedCountI(&mb);
+    }
   };
 
   /*------------------------------------------------------------------------*
-   * chibios_rt::MailboxBuffer                                              *
+   * chibios_rt::Mailbox                                                    *
    *------------------------------------------------------------------------*/
   /**
-   * @brief   Template class encapsulating a mailbox and its messages buffer.
+   * @brief     Template class encapsulating a mailbox and its messages buffer.
    *
-   * @param N                   size of the mailbox
+   * @param N               length of the mailbox buffer
    */
-  template <int N>
-  class MailboxBuffer : public Mailbox {
+  template <typename T, int N>
+  class Mailbox : public MailboxBase<T> {
   private:
     msg_t   mb_buf[N];
 
   public:
     /**
-     * @brief   BufferMailbox constructor.
+     * @brief   Mailbox constructor.
      *
      * @init
      */
-    MailboxBuffer(void) : Mailbox(mb_buf,
-                                  (cnt_t)(sizeof mb_buf / sizeof (msg_t))) {
+    Mailbox(void) :
+      MailboxBase<T>(mb_buf, (cnt_t)(sizeof mb_buf / sizeof (msg_t))) {
     }
   };
 #endif /* CH_CFG_USE_MAILBOXES */

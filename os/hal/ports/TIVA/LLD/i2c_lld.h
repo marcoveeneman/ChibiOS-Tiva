@@ -187,6 +187,24 @@
 #endif
 
 /**
+ * @brief   I2C8 driver enable switch.
+ * @details If set to @p TRUE the support for I2C8 is included.
+ * @note    The default is @p FALSE.
+ */
+#if !defined(TIVA_I2C_USE_I2C8) || defined(__DOXYGEN__)
+#define TIVA_I2C_USE_I2C8           FALSE
+#endif
+
+/**
+ * @brief   I2C9 driver enable switch.
+ * @details If set to @p TRUE the support for I2C9 is included.
+ * @note    The default is @p FALSE.
+ */
+#if !defined(TIVA_I2C_USE_I2C9) || defined(__DOXYGEN__)
+#define TIVA_I2C_USE_I2C9           FALSE
+#endif
+
+/**
  * @brief   I2C timeout on busy condition in milliseconds.
  */
 #if !defined(TIVA_I2C_BUSY_TIMEOUT) || defined(__DOXYGEN__)
@@ -250,6 +268,20 @@
 #endif
 
 /**
+ * @brief   I2C8 interrupt priority level setting.
+ */
+#if !defined(TIVA_I2C_I2C8_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define TIVA_I2C_I2C8_IRQ_PRIORITY  4
+#endif
+
+/**
+ * @brief   I2C9 interrupt priority level setting.
+ */
+#if !defined(TIVA_I2C_I2C9_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define TIVA_I2C_I2C9_IRQ_PRIORITY  4
+#endif
+
+/**
  * @}
  */
 
@@ -262,7 +294,8 @@
  */
 #if !TIVA_I2C_USE_I2C0 && !TIVA_I2C_USE_I2C1 && !TIVA_I2C_USE_I2C2 && \
     !TIVA_I2C_USE_I2C3 && !TIVA_I2C_USE_I2C4 && !TIVA_I2C_USE_I2C5 && \
-    !TIVA_I2C_USE_I2C6 && !TIVA_I2C_USE_I2C7
+    !TIVA_I2C_USE_I2C6 && !TIVA_I2C_USE_I2C7 && !TIVA_I2C_USE_I2C8 && \
+    !TIVA_I2C_USE_I2C9
 #error "I2C driver activated but no I2C peripheral assigned"
 #endif
 
@@ -304,6 +337,16 @@
 #if TIVA_I2C_USE_I2C7 && \
     !CORTEX_IS_VALID_KERNEL_PRIORITY(TIVA_I2C_I2C7_IRQ_PRIORITY)
 #error "Invalid IRQ priority assigned to I2C7"
+#endif
+
+#if TIVA_I2C_USE_I2C8 && \
+    !CORTEX_IS_VALID_KERNEL_PRIORITY(TIVA_I2C_I2C8_IRQ_PRIORITY)
+#error "Invalid IRQ priority assigned to I2C8"
+#endif
+
+#if TIVA_I2C_USE_I2C9 && \
+    !CORTEX_IS_VALID_KERNEL_PRIORITY(TIVA_I2C_I2C9_IRQ_PRIORITY)
+#error "Invalid IRQ priority assigned to I2C9"
 #endif
 
 /*===========================================================================*/
@@ -448,6 +491,14 @@ extern I2CDriver I2CD7;
 
 #if TIVA_I2C_USE_I2C7
 extern I2CDriver I2CD8;
+#endif
+
+#if TIVA_I2C_USE_I2C8
+extern I2CDriver I2CD9;
+#endif
+
+#if TIVA_I2C_USE_I2C9
+extern I2CDriver I2CD10;
 #endif
 
 #endif /* !defined(__DOXYGEN__) */

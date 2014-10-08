@@ -30,7 +30,26 @@
 /*
  * MCU type
  */
-#define TM4C1294
+//#define TM4C1290NCPDT
+//#define TM4C1290NCZAD
+//#define TM4C1292NCPDT
+//#define TM4C1292NCZAD
+//#define TM4C1294KCPDT
+#define TM4C1294NCPDT
+//#define TM4C1294NCZAD
+//#define TM4C1297NCZAD
+//#define TM4C1299KCZAD
+//#define TM4C1299NCZAD
+//#define TM4C129CNCPDT
+//#define TM4C129CNCZAD
+//#define TM4C129DNCPDT
+//#define TM4C129DNCZAD
+//#define TM4C129EKCPDT
+//#define TM4C129ENCPDT
+//#define TM4C129ENCZAD
+//#define TM4C129LNCZAD
+//#define TM4C129XKCZAD
+//#define TM4C129XNCZAD
 
 /*
  * Board oscillators-related settings.

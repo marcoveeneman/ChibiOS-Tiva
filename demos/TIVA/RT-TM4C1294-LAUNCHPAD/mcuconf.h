@@ -14,18 +14,62 @@
 /*
  * HAL driver system settings.
  */
-#define TIVA_OSCSRC                         TIVA_RCC2_OSCSRC2_MOSC
-#define TIVA_MOSC_ENABLE                    TRUE
-#define TIVA_DIV400_ENABLE                  TRUE
-#define TIVA_SYSDIV_VALUE                   2
-#define TIVA_USESYSDIV_ENABLE               FALSE
-#define TIVA_SYSDIV2LSB_ENABLE              FALSE
-#define TIVA_BYPASS_ENABLE                  TRUE
+#define TIVA_MOSC_SINGLE_ENDED              FALSE
+#define TIVA_RSCLKCFG_OSCSRC                RSCLKCFG_OSCSRC_MOSC
 
 /*
- * GPIO Lock register password: "LOCK"
+ * GPT driver system settings.
  */
-#define TIVA_GPIO_LOCK_PWD                  0x4C4F434B
+#define TIVA_GPT_USE_GPT0                   FALSE
+#define TIVA_GPT_USE_GPT1                   FALSE
+#define TIVA_GPT_USE_GPT2                   FALSE
+#define TIVA_GPT_USE_GPT3                   FALSE
+#define TIVA_GPT_USE_GPT4                   FALSE
+#define TIVA_GPT_USE_GPT5                   FALSE
+#define TIVA_GPT_USE_GPT6                   FALSE
+#define TIVA_GPT_USE_GPT7                   FALSE
+#define TIVA_GPT_GPT0A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT1A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT2A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT3A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT4A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT5A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT6A_IRQ_PRIORITY         7
+#define TIVA_GPT_GPT7A_IRQ_PRIORITY         7
+
+/*
+ * I2C driver system settings.
+ */
+#define TIVA_I2C_USE_I2C0                   FALSE
+#define TIVA_I2C_USE_I2C1                   FALSE
+#define TIVA_I2C_USE_I2C2                   FALSE
+#define TIVA_I2C_USE_I2C3                   FALSE
+#define TIVA_I2C_USE_I2C4                   FALSE
+#define TIVA_I2C_USE_I2C5                   FALSE
+#define TIVA_I2C_USE_I2C6                   FALSE
+#define TIVA_I2C_USE_I2C7                   FALSE
+#define TIVA_I2C_USE_I2C8                   FALSE
+#define TIVA_I2C_USE_I2C9                   FALSE
+#define TIVA_I2C_I2C0_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C1_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C2_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C3_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C4_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C5_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C6_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C7_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C8_IRQ_PRIORITY          4
+#define TIVA_I2C_I2C9_IRQ_PRIORITY          4
+
+/*
+ * PWM driver system settings.
+ */
+#define TIVA_PWM_USE_PWM0                   FALSE
+#define TIVA_PWM_PWM0_FAULT_IRQ_PRIORITY    4
+#define TIVA_PWM_PWM0_0_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_1_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_2_IRQ_PRIORITY        4
+#define TIVA_PWM_PWM0_3_IRQ_PRIORITY        4
 
 /*
  * SERIAL driver system settings.
@@ -51,3 +95,6 @@
  * ST driver system settings.
  */
 #define TIVA_ST_IRQ_PRIORITY                2
+#define TIVA_ST_USE_WIDE_TIMER              TRUE
+#define TIVA_ST_TIMER_NUMBER                5
+#define TIVA_ST_TIMER_LETTER                A

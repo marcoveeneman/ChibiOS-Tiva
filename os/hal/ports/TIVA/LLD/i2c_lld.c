@@ -94,6 +94,20 @@ I2CDriver I2CD7;
 I2CDriver I2CD8;
 #endif
 
+/**
+ * @brief I2C8 driver identifier.
+ */
+#if TIVA_I2C_USE_I2C8 || defined(__DOXYGEN__)
+I2CDriver I2CD9;
+#endif
+
+/**
+ * @brief I2C9 driver identifier.
+ */
+#if TIVA_I2C_USE_I2C9 || defined(__DOXYGEN__)
+I2CDriver I2CD10;
+#endif
+
 /*===========================================================================*/
 /* Driver local variables and types.                                         */
 /*===========================================================================*/
@@ -370,6 +384,38 @@ OSAL_IRQ_HANDLER(TIVA_I2C7_HANDLER)
 }
 #endif /* TIVA_I2C_USE_I2C7 */
 
+#if TIVA_I2C_USE_I2C8 || defined(__DOXYGEN__)
+/**
+ * @brief   I2C8 interrupt handler.
+ *
+ * @notapi
+ */
+OSAL_IRQ_HANDLER(TIVA_I2C8_HANDLER)
+{
+  OSAL_IRQ_PROLOGUE();
+
+  i2c_lld_serve_interrupt(&I2CD9);
+
+  OSAL_IRQ_EPILOGUE();
+}
+#endif /* TIVA_I2C_USE_I2C8 */
+
+#if TIVA_I2C_USE_I2C9 || defined(__DOXYGEN__)
+/**
+ * @brief   I2C9 interrupt handler.
+ *
+ * @notapi
+ */
+OSAL_IRQ_HANDLER(TIVA_I2C9_HANDLER)
+{
+  OSAL_IRQ_PROLOGUE();
+
+  i2c_lld_serve_interrupt(&I2CD10);
+
+  OSAL_IRQ_EPILOGUE();
+}
+#endif /* TIVA_I2C_USE_I2C9 */
+
 /*===========================================================================*/
 /* Driver exported functions.                                                */
 /*===========================================================================*/
@@ -428,6 +474,18 @@ void i2c_lld_init(void) {
   I2CD8.thread = NULL;
   I2CD8.i2c    = I2C7;
 #endif /* TIVA_I2C_USE_I2C7 */
+
+#if TIVA_I2C_USE_I2C8
+  i2cObjectInit(&I2CD9);
+  I2CD9.thread = NULL;
+  I2CD9.i2c    = I2C8;
+#endif /* TIVA_I2C_USE_I2C8 */
+
+#if TIVA_I2C_USE_I2C9
+  i2cObjectInit(&I2CD10);
+  I2CD10.thread = NULL;
+  I2CD10.i2c    = I2C9;
+#endif /* TIVA_I2C_USE_I2C9 */
 }
 
 /**
@@ -446,56 +504,70 @@ void i2c_lld_start(I2CDriver *i2cp)
 #if TIVA_I2C_USE_I2C0
     if (&I2CD1 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 0);
-      nvicEnableVector(I2C0_IRQn, TIVA_I2C_I2C0_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C0_NUMBER, TIVA_I2C_I2C0_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C0 */
 
 #if TIVA_I2C_USE_I2C1
     if (&I2CD2 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 1);
-      nvicEnableVector(I2C1_IRQn, TIVA_I2C_I2C1_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C1_NUMBER, TIVA_I2C_I2C1_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C1 */
 
 #if TIVA_I2C_USE_I2C2
     if (&I2CD3 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 2);
-      nvicEnableVector(I2C2_IRQn, TIVA_I2C_I2C2_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C2_NUMBER, TIVA_I2C_I2C2_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C2 */
 
 #if TIVA_I2C_USE_I2C3
     if (&I2CD4 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 3);
-      nvicEnableVector(I2C3_IRQn, TIVA_I2C_I2C3_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C3_NUMBER, TIVA_I2C_I2C3_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C3 */
 
 #if TIVA_I2C_USE_I2C4
     if (&I2CD5 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 4);
-      nvicEnableVector(I2C4_IRQn, TIVA_I2C_I2C4_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C4_NUMBER, TIVA_I2C_I2C4_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C4 */
 
 #if TIVA_I2C_USE_I2C5
     if (&I2CD6 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 5);
-      nvicEnableVector(I2C5_IRQn, TIVA_I2C_I2C5_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C5_NUMBER, TIVA_I2C_I2C5_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C5 */
 
 #if TIVA_I2C_USE_I2C6
     if (&I2CD7 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 6);
-      nvicEnableVector(I2C6_IRQn, TIVA_I2C_I2C6_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C6_NUMBER, TIVA_I2C_I2C6_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C6 */
 
 #if TIVA_I2C_USE_I2C7
     if (&I2CD8 == i2cp) {
       SYSCTL->RCGCI2C |= (1 << 7);
-      nvicEnableVector(I2C7_IRQn, TIVA_I2C_I2C7_IRQ_PRIORITY);
+      nvicEnableVector(TIVA_I2C7_NUMBER, TIVA_I2C_I2C7_IRQ_PRIORITY);
+    }
+#endif /* TIVA_I2C_USE_I2C7 */
+
+#if TIVA_I2C_USE_I2C8
+    if (&I2CD9 == i2cp) {
+      SYSCTL->RCGCI2C |= (1 << 8);
+      nvicEnableVector(TIVA_I2C8_NUMBER, TIVA_I2C_I2C8_IRQ_PRIORITY);
+    }
+#endif /* TIVA_I2C_USE_I2C7 */
+
+#if TIVA_I2C_USE_I2C9
+    if (&I2CD10 == i2cp) {
+      SYSCTL->RCGCI2C |= (1 << 9);
+      nvicEnableVector(TIVA_I2C9_NUMBER, TIVA_I2C_I2C9_IRQ_PRIORITY);
     }
 #endif /* TIVA_I2C_USE_I2C7 */
   }
@@ -524,58 +596,72 @@ void i2c_lld_stop(I2CDriver *i2cp)
 #if TIVA_I2C_USE_I2C0
     if (&I2CD1 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 0);
-      nvicDisableVector(I2C0_IRQn);
+      nvicDisableVector(TIVA_I2C0_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C0 */
 
 #if TIVA_I2C_USE_I2C1
     if (&I2CD2 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 1);
-      nvicDisableVector(I2C1_IRQn);
+      nvicDisableVector(TIVA_I2C1_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C1 */
 
 #if TIVA_I2C_USE_I2C2
     if (&I2CD3 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 2);
-      nvicDisableVector(I2C2_IRQn);
+      nvicDisableVector(TIVA_I2C2_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C2 */
 
 #if TIVA_I2C_USE_I2C3
     if (&I2CD4 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 3);
-      nvicDisableVector(I2C3_IRQn);
+      nvicDisableVector(TIVA_I2C3_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C3 */
 
 #if TIVA_I2C_USE_I2C4
     if (&I2CD5 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 4);
-      nvicDisableVector(I2C4_IRQn);
+      nvicDisableVector(TIVA_I2C4_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C4 */
 
 #if TIVA_I2C_USE_I2C5
     if (&I2CD6 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 5);
-      nvicDisableVector(I2C5_IRQn);
+      nvicDisableVector(TIVA_I2C5_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C5 */
 
 #if TIVA_I2C_USE_I2C6
     if (&I2CD7 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 6);
-      nvicDisableVector(I2C6_IRQn);
+      nvicDisableVector(TIVA_I2C6_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C6 */
 
 #if TIVA_I2C_USE_I2C7
     if (&I2CD8 == i2cp) {
       SYSCTL->RCGCI2C &= ~(1 << 7);
-      nvicDisableVector(I2C7_IRQn);
+      nvicDisableVector(TIVA_I2C7_NUMBER);
     }
 #endif /* TIVA_I2C_USE_I2C7 */
+
+#if TIVA_I2C_USE_I2C8
+    if (&I2CD9 == i2cp) {
+      SYSCTL->RCGCI2C &= ~(1 << 8);
+      nvicDisableVector(TIVA_I2C8_NUMBER);
+    }
+#endif /* TIVA_I2C_USE_I2C8 */
+
+#if TIVA_I2C_USE_I2C9
+    if (&I2CD10 == i2cp) {
+      SYSCTL->RCGCI2C &= ~(1 << 9);
+      nvicDisableVector(TIVA_I2C9_NUMBER);
+    }
+#endif /* TIVA_I2C_USE_I2C9 */
 
   dp->MCR = 0;
   dp->MTPR = 0;

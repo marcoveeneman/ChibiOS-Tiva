@@ -410,12 +410,12 @@ namespace chibios_rt {
     return chSemWaitS(&sem);
   }
 
-  msg_t CounterSemaphore::waitTimeout(systime_t time) {
+  msg_t CounterSemaphore::wait(systime_t time) {
 
     return chSemWaitTimeout(&sem, time);
   }
 
-  msg_t CounterSemaphore::waitTimeoutS(systime_t time) {
+  msg_t CounterSemaphore::waitS(systime_t time) {
 
     return chSemWaitTimeoutS(&sem, time);
   }
@@ -464,12 +464,12 @@ namespace chibios_rt {
     return chBSemWaitS(&bsem);
   }
 
-  msg_t BinarySemaphore::waitTimeout(systime_t time) {
+  msg_t BinarySemaphore::wait(systime_t time) {
 
     return chBSemWaitTimeout(&bsem, time);
   }
 
-  msg_t BinarySemaphore::waitTimeoutS(systime_t time) {
+  msg_t BinarySemaphore::waitS(systime_t time) {
 
     return chBSemWaitTimeoutS(&bsem, time);
   }
@@ -529,6 +529,16 @@ namespace chibios_rt {
     chMtxLockS(&mutex);
   }
 
+  void Mutex::unlock(void) {
+
+    chMtxUnlock(&mutex);
+  }
+
+  void Mutex::unlockS(void) {
+
+    chMtxLockS(&mutex);
+  }
+
 #if CH_CFG_USE_CONDVARS
   /*------------------------------------------------------------------------*
    * chibios_rt::CondVar                                                    *
@@ -569,7 +579,7 @@ namespace chibios_rt {
   }
 
 #if CH_CFG_USE_CONDVARS_TIMEOUT
-  msg_t CondVar::waitTimeout(systime_t time) {
+  msg_t CondVar::wait(systime_t time) {
 
     return chCondWaitTimeout(&condvar, time);
   }
@@ -671,12 +681,12 @@ namespace chibios_rt {
     return chIQGet(&iq);
   }
 
-  msg_t InQueue::getTimeout(systime_t time) {
+  msg_t InQueue::get(systime_t time) {
 
     return chIQGetTimeout(&iq, time);
   }
 
-  size_t InQueue::readTimeout(uint8_t *bp, size_t n, systime_t time) {
+  size_t InQueue::read(uint8_t *bp, size_t n, systime_t time) {
 
     return chIQReadTimeout(&iq, bp, n, time);
   }
@@ -719,7 +729,7 @@ namespace chibios_rt {
     return chOQPut(&oq, b);
   }
 
-  msg_t OutQueue::putTimeout(uint8_t b, systime_t time) {
+  msg_t OutQueue::put(uint8_t b, systime_t time) {
 
     return chOQPutTimeout(&oq, b, time);
   }
@@ -729,82 +739,11 @@ namespace chibios_rt {
     return chOQGetI(&oq);
   }
 
-  size_t OutQueue::writeTimeout(const uint8_t *bp, size_t n,
-                                systime_t time) {
+  size_t OutQueue::write(const uint8_t *bp, size_t n, systime_t time) {
 
     return chOQWriteTimeout(&oq, bp, n, time);
   }
 #endif /* CH_CFG_USE_QUEUES */
-
-#if CH_CFG_USE_MAILBOXES
-  /*------------------------------------------------------------------------*
-   * chibios_rt::Mailbox                                                    *
-   *------------------------------------------------------------------------*/
-  Mailbox::Mailbox(msg_t *buf, cnt_t n) {
-
-    chMBObjectInit(&mb, buf, n);
-  }
-
-  void Mailbox::reset(void) {
-
-    chMBReset(&mb);
-  }
-
-  msg_t Mailbox::post(msg_t msg, systime_t time) {
-
-    return chMBPost(&mb, msg, time);
-  }
-
-  msg_t Mailbox::postS(msg_t msg, systime_t time) {
-
-    return chMBPostS(&mb, msg, time);
-  }
-
-  msg_t Mailbox::postI(msg_t msg) {
-
-    return chMBPostI(&mb, msg);
-  }
-
-  msg_t Mailbox::postAhead(msg_t msg, systime_t time) {
-
-    return chMBPostAhead(&mb, msg, time);
-  }
-
-  msg_t Mailbox::postAheadS(msg_t msg, systime_t time) {
-
-    return chMBPostAheadS(&mb, msg, time);
-  }
-
-  msg_t Mailbox::postAheadI(msg_t msg) {
-
-    return chMBPostAheadI(&mb, msg);
-  }
-
-  msg_t Mailbox::fetch(msg_t *msgp, systime_t time) {
-
-    return chMBFetch(&mb, msgp, time);
-  }
-
-  msg_t Mailbox::fetchS(msg_t *msgp, systime_t time) {
-
-    return chMBFetchS(&mb, msgp, time);
-  }
-
-  msg_t Mailbox::fetchI(msg_t *msgp) {
-
-    return chMBFetchI(&mb, msgp);
-  }
-
-  cnt_t Mailbox::getFreeCountI(void) {
-
-    return chMBGetFreeCountI(&mb);
-  }
-
-  cnt_t Mailbox::getUsedCountI(void) {
-
-    return chMBGetUsedCountI(&mb);
-  }
-#endif /* CH_CFG_USE_MAILBOXES */
 
 #if CH_CFG_USE_MEMPOOLS
   /*------------------------------------------------------------------------*

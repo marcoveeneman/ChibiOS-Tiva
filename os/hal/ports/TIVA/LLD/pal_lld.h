@@ -134,6 +134,21 @@ typedef struct
   /** @brief Port Q setup data.*/
   tiva_gpio_setup_t     PQData;
 #endif /* TIVA_HAS_GPIOQ.*/
+
+#if TIVA_HAS_GPIOR || defined(__DOXYGEN__)
+  /** @brief Port R setup data.*/
+  tiva_gpio_setup_t     PRData;
+#endif /* TIVA_HAS_GPIOR.*/
+
+#if TIVA_HAS_GPIOS || defined(__DOXYGEN__)
+  /** @brief Port S setup data.*/
+  tiva_gpio_setup_t     PSData;
+#endif /* TIVA_HAS_GPIOS.*/
+
+#if TIVA_HAS_GPIOT || defined(__DOXYGEN__)
+  /** @brief Port T setup data.*/
+  tiva_gpio_setup_t     PTData;
+#endif /* TIVA_HAS_GPIOT.*/
 } PALConfig;
 
 /**
@@ -227,7 +242,22 @@ typedef GPIO_TypeDef *ioportid_t;
 #if TIVA_HAS_GPIOQ || defined(__DOXYGEN__)
 /** @brief Port Q setup data.*/
 #define IOPORT15        GPIOQ
-#endif /* TIVA_HAS_GPIOP.*/
+#endif /* TIVA_HAS_GPIOQ.*/
+
+#if TIVA_HAS_GPIOR || defined(__DOXYGEN__)
+/** @brief Port R setup data.*/
+#define IOPORT16        GPIOR
+#endif /* TIVA_HAS_GPIOR.*/
+
+#if TIVA_HAS_GPIOS || defined(__DOXYGEN__)
+/** @brief Port S setup data.*/
+#define IOPORT17        GPIOS
+#endif /* TIVA_HAS_GPIOS.*/
+
+#if TIVA_HAS_GPIOT || defined(__DOXYGEN__)
+/** @brief Port T setup data.*/
+#define IOPORT18        GPIOT
+#endif /* TIVA_HAS_GPIOT.*/
 
 /*===========================================================================*/
 /* Implementation, some of the following macros could be implemented as      */

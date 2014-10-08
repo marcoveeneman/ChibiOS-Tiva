@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    Tiva/TM4C123x/hal_lld.h
- * @brief   TM4C123x HAL subsystem low level driver header.
+ * @file    TIVA/TM4C129x/hal_lld.h
+ * @brief   TM4C129x HAL subsystem low level driver header.
  * @pre     This module requires the following macros to be defined in the
  *          @p board.h file:
  *          - TODO: add required macros
@@ -207,6 +207,14 @@
 /* Driver pre-compile time settings.                                         */
 /*===========================================================================*/
 
+#if !defined(TIVA_MOSC_SINGLE_ENDED)
+#define TIVA_MOSC_SINGLE_ENDED          FALSE
+#endif
+
+#if !defined(TIVA_RSCLKCFG_OSCSRC)
+#define TIVA_RSCLKCFG_OSCSRC            RSCLKCFG_OSCSRC_MOSC
+#endif
+
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
@@ -215,18 +223,17 @@
  * Configuration-related checks.
  */
 #if !defined(TM4C129x_MCUCONF)
-#error "Using a wrong mcuconf.h file, TM4C123x_MCUCONF not defined"
+#error "Using a wrong mcuconf.h file, TM4C129x_MCUCONF not defined"
 #endif
 
 /*
  * Oscillator-related checks.
  */
-#if !(TIVA_OSCSRC == TIVA_RCC2_OSCSRC2_MOSC) &&                                 \
-    !(TIVA_OSCSRC == TIVA_RCC2_OSCSRC2_PIOSC) &&                                \
-    !(TIVA_OSCSRC == TIVA_RCC2_OSCSRC2_PIOSC_4) &&                              \
-    !(TIVA_OSCSRC == TIVA_RCC2_OSCSRC2_LFIOSC) &&                               \
-    !(TIVA_OSCSRC == TIVA_RCC2_OSCSRC2_32768)
-#error "Invalid value for TIVA_OSCSRC defined"
+#if !(TIVA_RSCLKCFG_OSCSRC == RSCLKCFG_OSCSRC_PIOSC) &&                       \
+    !(TIVA_RSCLKCFG_OSCSRC == RSCLKCFG_OSCSRC_LFIOSC) &&                      \
+    !(TIVA_RSCLKCFG_OSCSRC == RSCLKCFG_OSCSRC_MOSC) &&                        \
+    !(TIVA_RSCLKCFG_OSCSRC == RSCLKCFG_OSCSRC_RTCOSC)
+#error "Invalid value for TIVA_RSCLKCFG_OSCSRC defined"
 #endif
 
 #if TIVA_XTAL_VALUE == 4000000
@@ -275,6 +282,7 @@
 #error "Invalid value for TIVA_XTAL_VALUE defined"
 #endif
 
+/*
 #if TIVA_MOSC_ENABLE == TRUE
 #define TIVA_MOSCDIS            (0 << 0)
 #define TIVA_XTAL               TIVA_XTAL_
@@ -329,9 +337,10 @@
 #if (TIVA_OSCSRC == TIVA_RCC_OSCSRC_MOSC) && (TIVA_MOSC_ENABLE == FALSE)
 #error "Main Oscillator selected but not enabled"
 #endif
-
+*/
 /*
- * System Clock calculation 
+ * System Clock calculation
+ * TODO: dynamic TIVA_SYSCLK value
  */
 #define TIVA_SYSCLK             120000000
 

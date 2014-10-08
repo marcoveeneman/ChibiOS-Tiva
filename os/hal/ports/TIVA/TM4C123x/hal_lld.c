@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    Tiva/TM4C123x/hal_lld.c
+ * @file    TIVA/TM4C123x/hal_lld.c
  * @brief   TM4C123x HAL Driver subsystem low level driver source.
  *
  * @addtogroup HAL
@@ -65,7 +65,8 @@ void hal_lld_init(void)
  *
  * @special
  */
-void tiva_clock_init(void) {
+void tiva_clock_init(void)
+{
   uint32_t rcc, rcc2, i;
 
   /* 1. Bypass the PLL and system clock divider by setting the BYPASS bit and
@@ -126,6 +127,10 @@ void tiva_clock_init(void) {
   rcc2 |= (TIVA_BYPASS_VALUE << 11);
   SYSCTL->RCC = rcc;
   SYSCTL->RCC2 = rcc2;
+
+#if HAL_USE_PWM
+  SYSCTL->RCC |= TIVA_PWM_FIELDS;
+#endif
 }
 
 /**
